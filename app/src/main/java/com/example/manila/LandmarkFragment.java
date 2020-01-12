@@ -53,7 +53,7 @@ public class LandmarkFragment extends Fragment {
 
     }
     public View loadDatabase(View view) {
-        recyclerView = view.findViewById(R.id.List);
+        recyclerView = view.findViewById(R.id.ListmeDisplayOnly);
         mydb = new DatabaseHelperForUsers(getActivity());
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());

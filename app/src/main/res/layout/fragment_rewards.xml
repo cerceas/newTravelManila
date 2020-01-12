@@ -17,10 +17,12 @@
         android:textSize="36sp"
         android:gravity="center"/>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ListRewards"
         android:layout_width="match_parent"
-        android:layout_height="443dp"
-        android:layout_margin="15dp" />
+        android:layout_height="350dp"
+        android:layout_margin="15dp" >
+    </androidx.recyclerview.widget.RecyclerView>
 
     <Button
         android:id="@+id/button2"

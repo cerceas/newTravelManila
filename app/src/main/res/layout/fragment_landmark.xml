@@ -24,7 +24,7 @@
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/List"
+            android:id="@+id/ListmeDisplayOnly"
             android:layout_width="match_parent"
             android:layout_height="438dp"
             android:layout_margin="15dp" >

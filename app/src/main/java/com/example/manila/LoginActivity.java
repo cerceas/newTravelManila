@@ -23,6 +23,9 @@ public class LoginActivity extends AppCompatActivity {
         etName = (EditText) findViewById(R.id.etName);
         etPassword = (EditText) findViewById(R.id.etPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
+        if (getIntent().getBooleanExtra("LOGOUT", false)) {
+            finish();
+        }
     }
 
     public void login(View view) {
@@ -60,6 +63,15 @@ public class LoginActivity extends AppCompatActivity {
         mydb.insertDataInLandmarks("Testing test2","Test 2 here");
         mydb.insertDataInLandmarks("Testing test2","Test 2 here");
         mydb.insertDataInLandmarks("Testing test2","Test 2 here");
+
+        mydb.insertDataInRewards("FREE MCFLOAT AND FRIEST","CODE: @1203939");
+        mydb.insertDataInRewards("FREE Girlfriend for 1 hour","CODE: @walang ganun tanga HAHAHA");
+        mydb.insertDataInRewards("FREE GOSURF 50 at Globe","CODE: @212312");
+        mydb.insertDataInRewards("FREE BigBite at 7-11","CODE: @111");
+        mydb.insertDataInRewards("FREE Test me","CODE: @2");
+        mydb.insertDataInRewards("FREE Test me","CODE: @4");
+        mydb.insertDataInRewards("FREE Test me","CODE: @3");
+
     }
 
 }

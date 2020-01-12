@@ -205,7 +205,16 @@ public class DatabaseHelperForUsers extends SQLiteOpenHelper {
         return 0;
     }
 
-
+    public String getRewardsCode(String title){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Database_Table_Rewards, null);
+        while (cursor.moveToNext()) {
+            if (cursor.getString(1).equals(title)) {
+                return cursor.getString(2);
+            }
+        }
+        return "Failed, Doesn't exist";
+    }
     public String Description(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + Database_Table_Landmarks, null);
@@ -217,7 +226,11 @@ public class DatabaseHelperForUsers extends SQLiteOpenHelper {
         }
         return "Failed, Doesn't exist";
     }
-
+    public Cursor getAllDataForRewards() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Database_Table_Rewards, null);
+        return cursor;
+    }
     public Cursor getAllDataForLandmarks() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + Database_Table_Landmarks, null);
@@ -294,7 +307,7 @@ public class DatabaseHelperForUsers extends SQLiteOpenHelper {
     public void updateLevel(int userID,int level){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Column_Exp, level);
+        contentValues.put(Column_Level, level);
         db.update(Database_Table, contentValues, Column_ID +" = ?", new String[]{String.valueOf(userID)});
     }
 

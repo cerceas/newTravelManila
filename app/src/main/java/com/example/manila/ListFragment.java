@@ -1,6 +1,7 @@
 package com.example.manila;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,14 +28,14 @@ public class ListFragment extends Fragment implements onBackPressed{
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Landmarks> landmarks;
     private View view;
-    int count;
+    private long count;
+    private Toast backToast;
     public static View passdata;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_list, container, false);
-        count=0;
         passdata = view;
         int User = getArguments().getInt("User");
         mydb = new DatabaseHelperForUsers(view.getContext());
@@ -75,12 +76,18 @@ public class ListFragment extends Fragment implements onBackPressed{
 
     @Override
     public void onBackPressed() {
-        if(count==0) {
-            Toast.makeText(getActivity(), "Click one more to exit the program", Toast.LENGTH_SHORT).show();
-            count++;
-        }else if(count==1){
-         getActivity().finish();
-         System.exit(0);
+        if(count+2000>System.currentTimeMillis()) {
+             backToast.cancel();
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("LOGOUT", true);
+            startActivity(intent);
+
+            getActivity().finish();
+        }else{
+            backToast=Toast.makeText(getActivity(), "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
         }
+        count=System.currentTimeMillis();
     }
 }

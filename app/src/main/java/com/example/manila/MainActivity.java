@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.navigation_rewards:
                     selectedFragment = new RewardsFragment();
+                    selectedFragment.setArguments(bundle);
                     break;
                 case R.id.navigation_about:
                     selectedFragment = new AboutFragment();
@@ -215,7 +216,14 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("User", user);
         startActivity(intent);
     }
-
+    public void StartRewardActivity(View view){
+        View parent = (View) view.getParent();
+        TextView text = (TextView) parent.findViewById(R.id.TextViewTitleRewards);
+        Intent intent = new Intent(getBaseContext(), RewardsActivity.class);
+        intent.putExtra("Title", text.getText().toString());
+        intent.putExtra("User", user);
+        startActivity(intent);
+    }
     public void showCustomAlertDialogBox(View view) {
         mydb = new DatabaseHelperForUsers(this);
         final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
@@ -292,27 +300,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-    //    public void onClickDelete(View view) {
-//        System.out.println("HERE AT DELETE");
-//        mydb = new DatabaseHelperForLandmarks(this);
-//        View parent = (View) view.getParent();
-//        TextView taskTextView = (TextView) parent.findViewById(R.id.TextViewTitle);
-//        String task = String.valueOf(taskTextView.getText());
-//        landmarks2.add(task);
-//        int deleterow = mydb.DeleteData(task);
-//        if (deleterow > 0) {
-//            Toast.makeText(this, "Successfully Deleted", Toast.LENGTH_SHORT).show();
-//            loadDatabase(view);
-//            saveData();
-//        } else {
-//            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
-//
-
     public void loadDatabase(int userID) {
         View parent = (View) ListFragment.passdata.getParent();
         recyclerView = parent.findViewById(R.id.List);
