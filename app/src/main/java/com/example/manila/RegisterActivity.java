@@ -79,10 +79,9 @@ public class RegisterActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Email is already taken", Toast.LENGTH_SHORT).show();
         }
+   }
 
 
-
-    }
 
     public void cancel(View view) {
         startActivity(new Intent(this, LoginActivity.class));

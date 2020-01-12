@@ -20,19 +20,21 @@ import com.google.android.gms.plus.PlusOneButton;
 
 import java.util.ArrayList;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements onBackPressed{
     private DatabaseHelperForUsers mydb;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter myAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Landmarks> landmarks;
     private View view;
+    int count;
     public static View passdata;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_list, container, false);
+        count=0;
         passdata = view;
         int User = getArguments().getInt("User");
         mydb = new DatabaseHelperForUsers(view.getContext());
@@ -43,6 +45,7 @@ public class ListFragment extends Fragment {
         } else {
             view = loadDatabase(view, User);
         }
+
         return view;
 
     }
@@ -70,4 +73,14 @@ public class ListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onBackPressed() {
+        if(count==0) {
+            Toast.makeText(getActivity(), "Click one more to exit the program", Toast.LENGTH_SHORT).show();
+            count++;
+        }else if(count==1){
+         getActivity().finish();
+         System.exit(0);
+        }
+    }
 }

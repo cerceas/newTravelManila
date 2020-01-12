@@ -265,6 +265,39 @@ public class DatabaseHelperForUsers extends SQLiteOpenHelper {
         return true;
     }
 
+    public int getExp(int userID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Database_Table, null);
+        while (cursor.moveToNext()) {
+            if (cursor.getInt(0)==userID) {
+                return cursor.getInt(6);
+            }
+        }
+        return 0;
+    }
+    public int getLevel(int userID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Database_Table, null);
+        while (cursor.moveToNext()) {
+            if (cursor.getInt(0)==userID) {
+                return cursor.getInt(5);
+            }
+        }
+        return 0;
+    }
+    public void updateExp(int userID,int Exp){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Column_Exp, Exp);
+        db.update(Database_Table, contentValues, Column_ID +" = ?", new String[]{String.valueOf(userID)});
+    }
+    public void updateLevel(int userID,int level){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Column_Exp, level);
+        db.update(Database_Table, contentValues, Column_ID +" = ?", new String[]{String.valueOf(userID)});
+    }
+
     public Integer DeleteDataUserList(int userID,int landMarkID) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(Database_Table_UserVisit, Column_ID + " = ? AND "+ Column_ID_Landmarks+ " = ? ", new String[]{ String.valueOf(userID) , String.valueOf(landMarkID) });

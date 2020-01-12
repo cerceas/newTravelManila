@@ -27,6 +27,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private String DateAlertDialogBox;
     private String user;
     private ArrayList<String> landmarks2 = new ArrayList<>();
+    private CharSequence[] sequences;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -66,9 +69,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.navigation_profile:
                     selectedFragment = new ProfileFragment();
+                    selectedFragment.setArguments(bundle);
                     break;
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).addToBackStack(null).commit();
             return true;
         }
     };
@@ -81,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         calendar = Calendar.getInstance();
         user = getIntent().getStringExtra("User");
         int PassUser = mydb.getIDFromTableUser(user);
-        System.out.println(PassUser);
         Bundle bundle = new Bundle();
         bundle.putInt("User", PassUser);
         ListFragment listFragment = new ListFragment();
@@ -102,18 +105,29 @@ public class MainActivity extends AppCompatActivity {
                 if (!mydb.CheckIfUser_ListExist(UserID, res.getInt(0))) {
                     landmarks2.add(mydb.getLandmarksBaseOnID(res.getInt(0)));
                 }
+
+            }
+        }else {
+            landmarks2.clear();
+            Cursor res2 = mydb.getAllDataForLandmarks();
+            while (res2.moveToNext()) {
+                if (!mydb.CheckIfUser_ListExist(UserID, res2.getInt(0))) {
+                    landmarks2.add(mydb.getLandmarksBaseOnID(res2.getInt(0)));
+                }
+
             }
         }
-        CharSequence[] sequences = new String[landmarks2.size()];
+        sequences = new String[landmarks2.size()];
         for (String temp : landmarks2) {
             sequences[count] = temp;
+            System.out.println(temp);
             count++;
         }
-        SingleAlgo(sequences, UserID);
+        SingleAlgo(UserID);
     }
 
 
-    public void SingleAlgo(final CharSequence[] sequences, final int userID) {
+    public void SingleAlgo(final int userID) {
         mydb = new DatabaseHelperForUsers(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -137,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setNeutralButton("Select Multiple Items", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                MultipleAlgo(sequences, userID);
+                MultipleAlgo(userID);
             }
         });
         builder.create();
@@ -145,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void MultipleAlgo(final CharSequence[] sequences, final int userID) {
+    public void MultipleAlgo(final int userID) {
         final ArrayList selectedItem = new ArrayList();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Landmarks");
@@ -186,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setNeutralButton("Back", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SingleAlgo(sequences, userID);
+                SingleAlgo(userID);
             }
         });
         builder.create();
@@ -223,6 +237,19 @@ public class MainActivity extends AppCompatActivity {
         Button ButtonExit = view1.findViewById(R.id.ButtonExit);
         Button ButtonRemove = view1.findViewById(R.id.ButtonRemove);
         Button ButtonViewDetails = view1.findViewById(R.id.ButtonDetails);
+        Button ButtonVerify = view1.findViewById(R.id.ButtonVerify);
+
+        ButtonVerify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int PassUser = mydb.getIDFromTableUser(user);
+                Intent intent = new Intent(getBaseContext(), ScanCodeActivity.class);
+                intent.putExtra("User", PassUser);
+
+                startActivity(intent);
+            }
+        });
+
         ButtonExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,21 +263,22 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view1.getContext());
                 builder.setTitle("Landmarks");
                 builder.setMessage("Delete?");
-               builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                    int i=mydb.DeleteDataUserList(userID,landmarksID);
-                       loadDatabase(userID);
-                   }
-               });
-               builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                       Toast.makeText(MainActivity.this, "No deletion", Toast.LENGTH_SHORT).show();
-                   }
-               });
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int i = mydb.DeleteDataUserList(userID, landmarksID);
+                        loadDatabase(userID);
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this, "No deletion", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 builder.create();
-                builder.show(); }
+                builder.show();
+            }
         });
 
         ButtonViewDetails.setOnClickListener(new View.OnClickListener() {
@@ -306,5 +334,22 @@ public class MainActivity extends AppCompatActivity {
         myAdapter = new LandmarksAdapter(this, landmarks);
         recyclerView.setAdapter(myAdapter);
     }
-    // Jomari
+
+    @Override
+    public void onBackPressed() {
+     String check=tellFragment();
+        if(!check.equals("ListFragment")){
+                super.onBackPressed();
+        }
+    }
+    private String tellFragment() {
+        List<Fragment> fragment = getSupportFragmentManager().getFragments();
+        for (Fragment f : fragment) {
+            if (f != null && f instanceof ListFragment) {
+                ((ListFragment) f).onBackPressed();
+                return "ListFragment";
+            }
+        }
+        return "None";
+    }
 }
