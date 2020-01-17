@@ -3,6 +3,7 @@ package com.example.manila;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -15,6 +16,9 @@ import androidx.core.content.ContextCompat;
 
 import com.google.zxing.Result;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ScanCodeActivity  extends AppCompatActivity implements ZXingScannerView.ResultHandler{
@@ -22,8 +26,10 @@ public class ScanCodeActivity  extends AppCompatActivity implements ZXingScanner
     ZXingScannerView ScannerView;
     private final int REQUEST_PERMISSION_CAMERA =1;
     private int userID;
-    private TextView Level;
-    private TextView Exp;
+    private int LandmarkID;
+    private String date;
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +37,7 @@ public class ScanCodeActivity  extends AppCompatActivity implements ZXingScanner
         setContentView(ScannerView);
         showPhoneStatePermission();
      userID=getIntent().getIntExtra("User",0);
+     LandmarkID=getIntent().getIntExtra("Landmark",0);
     }
 
     @Override
@@ -86,6 +93,15 @@ public class ScanCodeActivity  extends AppCompatActivity implements ZXingScanner
     public void handleResult(Result result) {
         mydb = new DatabaseHelperForUsers(this);
         String strResult = result.getText();
+        dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        date = dateFormat.format(calendar.getTime());
+        if(Integer.valueOf(strResult)>=1){
+            mydb.insertDataInVisited(userID,LandmarkID,date);
+            int i = mydb.DeleteDataUserList(userID, LandmarkID);
+            if(i==1){
+                System.out.println("Successfully Deleted");
+            }
+        }
         int points = Integer.parseInt(strResult);
        int Exp= mydb.getExp(userID) +points;
        int Level=mydb.getLevel(userID);
@@ -110,5 +126,10 @@ public class ScanCodeActivity  extends AppCompatActivity implements ZXingScanner
         super.onResume();
         ScannerView.setResultHandler(this);
         ScannerView.startCamera();
+    }
+
+    @Override
+    public void onBackPressed() {
+       startActivity(new Intent(this,MainActivity.class));
     }
 }

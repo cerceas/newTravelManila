@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -119,7 +118,7 @@ public class DatabaseHelperForUsers extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean insertDataInVisited(String UserID, String LandmarksID, String date) {
+    public boolean insertDataInVisited(int UserID, int LandmarksID, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Column_ID, UserID);
@@ -226,6 +225,13 @@ public class DatabaseHelperForUsers extends SQLiteOpenHelper {
         }
         return "Failed, Doesn't exist";
     }
+
+    public Cursor getUsernamePassEmail(int userID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Database_Table + " WHERE " + Column_ID + " = " + userID, null);
+        return cursor;
+    }
+
     public Cursor getAllDataForRewards() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + Database_Table_Rewards, null);
@@ -266,15 +272,12 @@ public class DatabaseHelperForUsers extends SQLiteOpenHelper {
         return null;
     }
 
-    public boolean UpdateData(String ID, String Fname, String Lname, String Email, String Pass) {
+    public boolean UpdateProfileData(int ID, String Fname, String Lname, String Email, String Pass) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Column_ID, ID);
-        contentValues.put(Column_FName, Fname);
-        contentValues.put(Column_LName, Lname);
         contentValues.put(Column_Email, Email);
         contentValues.put(Column_Pass, Pass);
-        db.update(Database_Table, contentValues, "ID = ?", new String[]{ID});
+        db.update(Database_Table, contentValues, "ID = ?", new String[]{String.valueOf(ID)});
         return true;
     }
 

@@ -30,7 +30,12 @@ public class ProfileFragment extends Fragment implements onBackPressed {
     private static int RESULT_LOAD_IMAGE = 1;
     private TextView Level;
     private ImageView imageView;
+    private TextView Profilename;
+    private TextView password;
+    private TextView email;
+    int User;
     private Button image;
+    private Button editProfile;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -40,14 +45,25 @@ public class ProfileFragment extends Fragment implements onBackPressed {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+         User = getArguments().getInt("User");
         Exp=view.findViewById(R.id.TextViewExp);
         Level=view.findViewById(R.id.TextViewLevel);
         imageView=view.findViewById(R.id.ImageViewProfile);
         image=view.findViewById(R.id.LoadImage);
         mydb = new DatabaseHelperForUsers(view.getContext());
-        int User = getArguments().getInt("User");
+        Profilename=view.findViewById(R.id.TextViewEditUsername);
+        password=view.findViewById(R.id.TextViewEditPass);
+        email=view.findViewById(R.id.TextViewEditEmail);
+        Cursor UserPassEmail=mydb.getUsernamePassEmail(User);
+
+
+        Profilename.setText(UserPassEmail.getString(1)+" "+UserPassEmail.getString(2));
+        password.setText(UserPassEmail.getString(4));
+        email.setText(UserPassEmail.getString(3));
+
         Exp.setText(String.valueOf(mydb.getExp(User)));
         Level.setText(String.valueOf(mydb.getLevel(User)));
+        editProfile=view.findViewById(R.id.UpdatePicture);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +80,15 @@ public class ProfileFragment extends Fragment implements onBackPressed {
                 }
             }
         });
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EditProfileActivity.class);
+                intent.putExtra("User", User);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 

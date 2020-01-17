@@ -231,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
 
         View parent = (View) view.getParent();
         final TextView text = (TextView) parent.findViewById(R.id.TextViewTitle);
-        System.out.println(text.getText().toString());
         TextView test = (TextView) view1.findViewById(R.id.TextViewAlertDialogTitle);
         test.setText(text.getText().toString());
         final int userID = mydb.getIDFromTableUser(user);
@@ -253,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 int PassUser = mydb.getIDFromTableUser(user);
                 Intent intent = new Intent(getBaseContext(), ScanCodeActivity.class);
                 intent.putExtra("User", PassUser);
-
+                intent.putExtra("Landmark",landmarksID);
                 startActivity(intent);
             }
         });
@@ -275,6 +274,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         int i = mydb.DeleteDataUserList(userID, landmarksID);
+                        if(i==1){
+                            System.out.println("Successfully Deleted");
+                        }
                         loadDatabase(userID);
                     }
                 });

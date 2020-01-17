@@ -55,8 +55,33 @@
         android:id="@+id/LoadImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="loadPicture"
-        android:text="Button" />
+        android:text="Image" />
 
+    <Button
+        android:id="@+id/UpdatePicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit" />
+
+    <TextView
+        android:id="@+id/TextViewEditUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        />
+
+    <TextView
+        android:id="@+id/TextViewEditPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pass"
+        />
+
+    <TextView
+        android:id="@+id/TextViewEditEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pass"
+        />
 
 </LinearLayout>

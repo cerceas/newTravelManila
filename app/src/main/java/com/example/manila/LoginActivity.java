@@ -55,11 +55,12 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(this, RegisterActivity.class));
     }
     public void CreateData(){
-        mydb.insertDataInLandmarks("Rizal","Rizal here");
-        mydb.insertDataInLandmarks("National Museum of Arts","NM of Arts Here");
-        mydb.insertDataInLandmarks("National Museum of History","NM if History Here");
-        mydb.insertDataInLandmarks("Testing test","test here");
-        mydb.insertDataInLandmarks("Testing test2","Test 2 here");
+        mydb.insertDataInLandmarks("National Planetarium","The National Museum has reopened the National Planetarium. It houses the Philippines’ Ethno astronomy, which shows how planets and stars have guided the country in sea navigation, agriculture, fishing and “the right timing of celebrating life ”. \n\n Location: Dr. Jose P. Rizal Park, Padre Burgos Ave, Ermita  \n\n Entrance Fee: Free for the gallery, P40.00 for scheduled shows.  \n\n Open Hours: Open Tuesdays to Sundays ");
+        mydb.insertDataInLandmarks("National Museum of Natural History","The majestic Tree of Life and 12 galleries highlight the rich biodiversity of the Philippines, putting it on par with the Amazon and Madagascar.  \n\n Location: Teodoro F. Valencia Circle, Ermita P. Burgos Drive, Rizal Park  \n\n Entrance Fee: Free  \n\n Open Hours: Open Tuesdays to Sundays ");
+        mydb.insertDataInLandmarks("National Museum of Anthropology","The former Museum of the Filipino People shows you what life was like from decades to centuries past. Check out the artefacts such as weapons, household tools, and musical instruments from different ethnicities.  \n\n Location: Padre Burgos Ave, Ermita Manila.  \n\n Entrance Fee: Free \n" +
+                "Open Hours: Open Tuesdays to Sundays \n");
+        mydb.insertDataInLandmarks("National Museum of Fine Arts","Housing the famous Spoliarium by Juan Luna, the museum also showcases works from the colonial Spanish period by Félix Resurreccion Hidalgo and Fernando Amorsolo. More contemporary paintings by Carlos “Botong” Francisco and Vicente Manansala are also on display. If you want to explore the country and its history through the eyes of its visual artists, the Fine Arts Museum is top priority. Housed in the old Congress building, it transports you to Manila’s boom pre-World War II. \n\n Location: Padre Burgos Ave, Ermita Manila. \n\n Entrance Fee: Free \n\n Open Hours: Open Tuesdays to Sundays");
+        mydb.insertDataInLandmarks("Museo ni Jose Rizal","Test 2 here");
         mydb.insertDataInLandmarks("Testing test2","Test 2 here");
         mydb.insertDataInLandmarks("Testing test2","Test 2 here");
         mydb.insertDataInLandmarks("Testing test2","Test 2 here");

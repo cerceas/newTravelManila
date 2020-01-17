@@ -5,7 +5,9 @@
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-permission-sdk-23 android:name="android.permission.CAMERA" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -17,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".RewardsActivity"></activity>
+        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".RewardsActivity" />
         <activity android:name=".LandmarkInfoActivity" />
         <activity android:name=".ScanCodeActivity" />
         <activity android:name=".SignUp" />
